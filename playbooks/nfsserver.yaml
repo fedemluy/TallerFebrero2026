@@ -1,0 +1,46 @@
+---
+- hosts: nfs01
+  become: true
+
+  tasks:
+  
+  - name: install service nfs utils
+    ansible.builtin.dnf:
+      name: nfs-utils
+      state: present
+
+  - name: create shared diretory
+    ansible.builtin.file:
+      path: /var/nfs/shared
+      state: directory
+      owner: nobody
+      mode: '0777'
+
+  - name: export shared directory
+    ansible.builtin.lineinfile:
+      path: /etc/exports
+      line: "/var/nfs/shared	192.168.10.0/24(rw)"
+      state: present
+
+  - name: Service NFS is started
+    ansible.bulting.systemd_services:
+      name: nfs-server
+      state: started
+      enabled: true
+
+
+  - name: NFS enable in firewalld
+    ansible.posix.firewalld:
+      service: nfs
+      state: enabled
+      
+
+
+#  handlers:  
+      
+#  - name: Restart SSH Service
+#    ansible.builtin.systemd_service:
+#      name: "{{ ('ssh' if ansible_os_family == 'Debian' else 'sshd') ~ '.service' }}"
+#      state: reloaded
+   
+
