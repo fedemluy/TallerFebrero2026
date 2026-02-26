@@ -1,0 +1,60 @@
+---
+- hosts: ubuntu
+  become: true
+
+  tasks:
+
+  - name: install packet autofs
+    ansible.builtin.apt:
+      name: "{{  item  }}"
+      state: present
+      update_cache: true
+    loop:
+      - autofs
+      - nfs-common
+      - python3
+
+#  - name: config file autofs
+#   ansible.builtin.lineinfile:
+#      path: /etc/auto.nfs
+#      line: "shared  --fstype=nfs4   --timeout=60    192.168.10.11:/srv/nfs/shared"
+#      state: present
+#      create: true
+#      owner: root
+#      mode: '0440'   
+#    notify: Restart nfs Service 
+
+  - name: copy file auto.master.fs
+    ansible.builtin.copy:
+      src: ../file/nfs.autofs
+      dest: /etc/auto.master.d/nfs.autofs
+      owner: root
+      mode: '0644'
+ 
+  - name: copy file autofs
+    ansible.builtin.copy:
+      src: ../file/auto.nfs
+      dest: /etc/nfs.autofs
+      owner: root
+      mode: '0644'
+    notify: Restart nfs Service    
+
+  - name: service NFS is started
+    ansible.builtin.systemd_service:
+      name: autofs
+      state: started
+      enabled: true
+
+  - name: test the file to client 
+    ansible.builtin.command:
+      cmd: cat /mnt/shared/README-NFS.txt
+
+
+  handlers:  
+      
+  - name: Restart nfs Service
+    ansible.builtin.systemd_service:
+      name: autofs.service
+      state: reloaded
+   
+
