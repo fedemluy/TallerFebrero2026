@@ -33,7 +33,20 @@ Segundo, instalamos el modulo de [ansible](https://docs.ansible.com/projects/ans
 sudo dnf -y install ansible-core
 ```
 
-Tercero, descargamos nuestro proyecto Git, dentro [del proyecto](https://github.com/fedemluy/TallerFebrero2026#) vamos al boton <>CODE y copiamos la URL. Puede ser HTTP [https://github.com/fedemluy/TallerFebrero2026.git](https://github.com/fedemluy/TallerFebrero2026.git) o ssh: [git@github.com:fedemluy/TallerFebrero2026.git](git@github.com:fedemluy/TallerFebrero2026.git).
+Tercero, instalamos git.
+```bash
+sudo dnf install git -y
+```
+Pre-configuracion Recomendada:
+```bash
+Tu nombre:
+git config --global user.name "Tu Nombre"
+
+Tu correo:
+git config --global user.email "tu@email.com"
+```
+
+Cuarto, descargamos nuestro proyecto Git, dentro [del proyecto](https://github.com/fedemluy/TallerFebrero2026#) vamos al boton <>CODE y copiamos la URL. Puede ser HTTP [https://github.com/fedemluy/TallerFebrero2026.git](https://github.com/fedemluy/TallerFebrero2026.git) o ssh: [git@github.com:fedemluy/TallerFebrero2026.git](git@github.com:fedemluy/TallerFebrero2026.git).
 
 Luego hacemos un git clone de la url
 ```bash
@@ -66,7 +79,7 @@ Luego hacemos un git clone de la url
 La cual esta organizada en diferentes secciones: (por carpeta).
 En collections vamos a encontrar un archivo requirements.yaml el cual tiene identificado todos los modulos que No son aparte del core, los cuales tenemos que instalar para que funcione correctamente el proyecto. 
 
-## Para la instalacion de los modulos vamos a utilizar el comando 
+## Para la instalacion de los modulos vamos a utilizar 
 
 Sitio oficial de Ansible para ver mas infomracion sobre [Modulos](https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/file_module.html)
 
@@ -74,7 +87,7 @@ Sitio oficial de Ansible para ver mas infomracion sobre [Modulos](https://docs.a
 ansible-galaxy collection install -r collections/requirements.yaml
 ```
 
-Dentro de la carpeta File, vamos a encontrar los archivos de configuracion que vamos a copiar en los equipos de forma remota atravez de los diferentes playbooks
+Dentro de la carpeta File, vamos a encontrar los archivos de configuracion que vamos a copiar en los equipos de forma remota a traves de los diferentes playbooks
 
 En inventories, vamos a encontrar un archivo ini con el inventario de los equipos.
 
