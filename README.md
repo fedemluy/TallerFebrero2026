@@ -1,4 +1,5 @@
-# TallerFebrero2026
+# TallerFebrero2026 
+# DOCUMENTO EN DESARROLLO! Sin Terminar, Momentaneamente No USAR
 
 Proyecto git de infraestructura como codigo. usando los temas dados en el taller Linux donde vamos a crear una infraestructura mínima y reproducible, automatizada con Ansible. La cual va a contar con un Server NFS y 2 clientes que van a montar automaticamente la particion de dicho server. 
 
@@ -16,7 +17,30 @@ Todos los equipos van a estar conectados atravez de un router el cual brinda ser
 <img width="871" height="423" alt="image" src="https://github.com/user-attachments/assets/45827ec3-6f4f-4a65-968c-a9ab6277cfb8" />
 
 
-## Dentro del Github podemos encontrar la estructura del proyecto 
+## Primeros pasos, preparacion del bastion
+
+Generamos una clave privada/publica ssh para poder ingresar a los equipos de manera segura y copiamos la llave publica a todos los equipos.
+```bash
+ssh-keygen -t ed25519
+ssh-copy-id sysadmin@192.168.10.11
+ssh-copy-id sysadmin@192.168.10.12
+ssh-copy-id sysadmin@192.168.10.21
+ssh-copy-id sysadmin@192.168.10.22
+```
+
+Segundo, instalamos el modulo de [ansible](https://docs.ansible.com/projects/ansible/latest/getting_started/index.html).
+```bash
+sudo dnf -y install ansible-core
+```
+
+Tercero, descargamos nuestro proyecto Git, dentro [del proyecto](https://github.com/fedemluy/TallerFebrero2026#) vamos al boton <>CODE y copiamos la URL. Puede ser HTTP [https://github.com/fedemluy/TallerFebrero2026.git](https://github.com/fedemluy/TallerFebrero2026.git) o ssh: [git@github.com:fedemluy/TallerFebrero2026.git](git@github.com:fedemluy/TallerFebrero2026.git).
+
+Luego hacemos un git clone de la url
+```bash
+ git clone git@github.com:fedemluy/TallerFebrero2026.git
+```
+
+## Dentro del proyecto podemos encontrar la siguente estructura 
 
 ```bash
 .
@@ -40,7 +64,7 @@ Todos los equipos van a estar conectados atravez de un router el cual brinda ser
 ```
 
 La cual esta organizada en diferentes secciones: (por carpeta).
-En collections vamos a encontrar un archivo requirements.yaml el cual tiene identificado todos los modulos que son aparte del core los cuales tenemos que instalar para que funcione correctamente el proyecto. 
+En collections vamos a encontrar un archivo requirements.yaml el cual tiene identificado todos los modulos que No son aparte del core, los cuales tenemos que instalar para que funcione correctamente el proyecto. 
 
 ## Para la instalacion de los modulos vamos a utilizar el comando 
 
@@ -50,28 +74,37 @@ Sitio oficial de Ansible para ver mas infomracion sobre [Modulos](https://docs.a
 ansible-galaxy collection install -r collections/requirements.yaml
 ```
 
-## Usage
+Dentro de la carpeta File, vamos a encontrar los archivos de configuracion que vamos a copiar en los equipos de forma remota atravez de los diferentes playbooks
 
-```python
-import foobar
+En inventories, vamos a encontrar un archivo ini con el inventario de los equipos.
 
-# returns 'words'
-foobar.pluralize('word')
+En playbook los diferentes archivos que van a realizar las tareas que deseamos
+En templates vamos a encontrar una plantilla o molde, con el cual vamos a generar archivos para poder hacer las pruebas y verificaciones. 
 
-# returns 'geese'
-foobar.pluralize('goose')
+## Uso de playbook
+Para ejecutar el playbook vamos a usar el comando ansible-playbook con la opcion -i para pasar el archivo donde tenemos el inventario de equipos en los cuales vamos a ejecutar el playbook deseado, igualmente dentro del playbook podemos tener definido que grupo o host dentro del inventario vamos a ejecutar. Despues vamos a selecionar el archivo con el playbook deseado y ademas vamos a agregar --ask-become-pass para que nos solicite la contraseña para realizar dicha tarea
 
-# returns 'phenomenon'
-foobar.singularize('phenomena')
+## Ejecutar un harderinig basico en los equipos
+```bash
+ansible-playbook -i inventories/hosts.ini playbooks/hardening.yaml --check --ask-become-pass
 ```
 
-## Contributing
+## Preparar el servidor NFS
+```bash
+ansible-playbook -i inventories/hosts.ini playbooks/nfsserver.yaml --ask-become-pass
+```
+## Probar el servidor NFS, abre el archivo que generamos con el template
+```bash
+ansible -i inventories/hosts.ini fileserver -m command -a 'cat /srv/nfs/shared/README-NFS.txt'
+```
 
-Pull requests are welcome. For major changes, please open an issue first
-to discuss what you would like to change.
+## Preparar los clientes para que monten el servidor NFS
+```bash
+ansible-playbook -i inventories/hosts.ini playbooks/nfsclient.yaml --ask-become-pass
+```
 
-Please make sure to update tests as appropriate.
 
-## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+```python
+```
+
