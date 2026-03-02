@@ -1,5 +1,4 @@
 # TallerFebrero2026 
-# DOCUMENTO EN DESARROLLO! Momentaneamente No USAR
 
 Proyecto git de infraestructura como codigo. usando los temas dados en el taller Linux donde vamos a crear una infraestructura mínima y reproducible, automatizada con Ansible. La cual va a contar con un Server NFS y 2 clientes que van a montar automaticamente la particion de dicho server. 
 
@@ -116,8 +115,4 @@ ansible -i inventories/hosts.ini fileserver -m command -a 'cat /srv/nfs/shared/R
 ansible-playbook -i inventories/hosts.ini playbooks/nfsclient.yaml --ask-become-pass
 ```
 
-
-
-```python
-```
 
