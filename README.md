@@ -1,5 +1,5 @@
 # TallerFebrero2026 
-# DOCUMENTO EN DESARROLLO! Sin Terminar, Momentaneamente No USAR
+# DOCUMENTO EN DESARROLLO! Momentaneamente No USAR
 
 Proyecto git de infraestructura como codigo. usando los temas dados en el taller Linux donde vamos a crear una infraestructura mínima y reproducible, automatizada con Ansible. La cual va a contar con un Server NFS y 2 clientes que van a montar automaticamente la particion de dicho server. 
 
@@ -12,7 +12,7 @@ Vamos a contar con 4 servidores sin entorno grafico, los cuales van a estar comp
 
 Todos los equipos van a estar conectados atravez de un router el cual brinda servicio dhcp y por el cual podemos navegar a internet y una segunda interface utilizada como lan local,
 
-## Diagrama de la red Lan local
+## Diagrama de la red Lan local (las ips pueden variar
 
 <img width="871" height="423" alt="image" src="https://github.com/user-attachments/assets/45827ec3-6f4f-4a65-968c-a9ab6277cfb8" />
 
@@ -46,11 +46,11 @@ Tu correo:
 git config --global user.email "tu@email.com"
 ```
 
-Cuarto, descargamos nuestro proyecto Git, dentro [del proyecto](https://github.com/fedemluy/TallerFebrero2026#) vamos al boton <>CODE y copiamos la URL. Puede ser HTTP [https://github.com/fedemluy/TallerFebrero2026.git](https://github.com/fedemluy/TallerFebrero2026.git) o ssh: [git@github.com:fedemluy/TallerFebrero2026.git](git@github.com:fedemluy/TallerFebrero2026.git).
+Cuarto, descargamos nuestro proyecto Git, dentro [del proyecto](https://github.com/fedemluy/TallerFebrero2026#) vamos al boton <>CODE y copiamos la URL. Puede ser HTTP [https://github.com/fedemluy/TallerFebrero2026.git](https://github.com/fedemluy/TallerFebrero2026.git) 
 
 Luego hacemos un git clone de la url
 ```bash
- git clone git@github.com:fedemluy/TallerFebrero2026.git
+ git clone https://github.com/fedemluy/TallerFebrero2026.git
 ```
 
 ## Dentro del proyecto podemos encontrar la siguente estructura 
