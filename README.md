@@ -12,7 +12,7 @@ Vamos a contar con 4 servidores sin entorno grafico, los cuales van a estar comp
 
 Todos los equipos van a estar conectados atravez de un router el cual brinda servicio dhcp y por el cual podemos navegar a internet y una segunda interface utilizada como lan local,
 
-## Diagrama de la red Lan local (las ips pueden variar
+## Diagrama de la red Lan local (las ips pueden variar, se debe modificar en el inventario)
 
 <img width="871" height="423" alt="image" src="https://github.com/user-attachments/assets/45827ec3-6f4f-4a65-968c-a9ab6277cfb8" />
 
