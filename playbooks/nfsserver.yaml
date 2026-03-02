@@ -42,13 +42,3 @@
       dest: /srv/nfs/shared/README-NFS.txt
       owner: nobody
       mode: u=r,g=r,o=r
-
-
-#  handlers:  
-      
-#  - name: Restart SSH Service
-#    ansible.builtin.systemd_service:
-#      name: "{{ ('ssh' if ansible_os_family == 'Debian' else 'sshd') ~ '.service' }}"
-#      state: reloaded
-   
-
