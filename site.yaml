@@ -1,0 +1,5 @@
+---
+- import_playbook: playbooks/hardening.yaml
+- import_playbook: playbooks/nfsclient.yaml
+- import_playbook: playbooks/nfsserver.yaml
+

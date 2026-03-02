@@ -45,14 +45,19 @@
     community.general.ufw:
       state: enabled
   
-  - name: Config Firewall permit ssh y nfs
+  - name: Config Firewall permit ssh
     community.general.ufw:
         rule: allow
-        name: "{{ item }}"
+        name: openssh
         src: 192.168.10.0/24
-      loop:
-        - OpenSSH
-        - nfs
+
+  - name: Access nfs
+    community.general.ufw:
+      rule: allow
+      port: '2049'
+      src: 192.168.10.0/24
+      proto: tcp
+
 
   - name: Access tcp port 8080 
     community.general.ufw:
@@ -60,15 +65,20 @@
       port: '8080'
       proto: tcp
 
+  - name: Política por defecto OUTGOING -> ALLOW
+    community.general.ufw:
+      policy: allow
+      direction: outgoing
+
   - name: Deny all trafic incoming
     community.general.ufw:
-      direction: in
+      direction: incoming
       policy: deny
         
 
   - name: Copy file service webserver
     ansible.builtin.copy:
-      src: ../files/shared-http.service
+      src: ../file/shared-http.service
       dest: /etc/systemd/system/shared-http.service
       owner: root
       mode: '0644'
@@ -78,7 +88,6 @@
     ansible.builtin.systemd_service:
       name: shared-http
       state: started
-      immediate: true
       enabled: true
       daemon-reload: true
 
