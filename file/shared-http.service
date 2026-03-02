@@ -1,0 +1,13 @@
+[Unit]
+Description=Server python public http
+After=network.target autofs.service
+
+[Service]
+Type=simple
+User=sysadmin
+WorkingDirectory=/mnt/shared
+ExecStart=python3 -m http.server 8080 --directory /mnt/shared
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
