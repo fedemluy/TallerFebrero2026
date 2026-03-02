@@ -65,7 +65,7 @@
       port: '8080'
       proto: tcp
 
-  - name: Política por defecto OUTGOING -> ALLOW
+  - name: Allow trafic output
     community.general.ufw:
       policy: allow
       direction: outgoing
