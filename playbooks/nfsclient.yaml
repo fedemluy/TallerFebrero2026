@@ -49,6 +49,33 @@
     ansible.builtin.command:
       cmd: cat /mnt/shared/README-NFS.txt
 
+# https://docs.ansible.com/projects/ansible/latest/collections/community/general/ufw_module.html#examples
+
+  - name: enable UFW
+    community.general.ufw:
+      state: enabled
+  
+  - name: Config Firewall permit ssh y nfs
+    community.general.ufw:
+        rule: allow
+        name: "{{ item }}"
+        src: 192.168.10.0/24
+      loop:
+        - OpenSSH
+        - nfs
+
+  - name: Access tcp port 8080 
+    community.general.ufw:
+      rule: allow
+      port: '8080'
+      proto: tcp
+
+  - name: Deny all trafic incoming
+    community.general.ufw:
+      direction: in
+      policy: deny
+        
+
 
   handlers:  
       
