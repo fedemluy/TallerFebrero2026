@@ -66,6 +66,22 @@
       policy: deny
         
 
+  - name: Copy file service webserver
+    ansible.builtin.copy:
+      src: ../files/shared-http.service
+      dest: /etc/systemd/system/shared-http.service
+      owner: root
+      mode: '0644'
+    notify: Restart webserver
+
+  - name: Start webserver
+    ansible.builtin.systemd_service:
+      name: shared-http
+      state: started
+      immediate: true
+      enabled: true
+      daemon-reload: true
+
   handlers:  
       
   - name: Restart nfs Service
@@ -74,3 +90,9 @@
       state: reloaded
    
 
+
+  - name: Restart webserver
+    ansible.builtin.systemd_service:
+      name: shared-http
+      state: restarted
+      daemon-reload: true
