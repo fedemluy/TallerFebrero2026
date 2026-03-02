@@ -29,17 +29,6 @@
       validate: '/usr/sbin/sshd -t -f %s'
     notify: Restart SSH Service
       
-#  - name: Reload service sshd in centOS
-#    ansible.builtin.systemd_service:
-#      name: sshd.service
-#      state: reloaded
-#    when: ansible_os_family == "RedHat"
-
-#  - name: Reload service ssh in Ubuntu
-#    ansible.builtin.systemd_service:
-#      name: ssh.service
-#      state: reloaded
-#    when: ansible_os_family == "Debian"
 
   handlers:  
   - name: Reboot servers
@@ -47,16 +36,7 @@
       
   - name: Restart SSH Service
     ansible.builtin.systemd_service:
-#      name: ssh.service
+#      name: ssh.service or sshd.service
       name: "{{ ('ssh' if ansible_os_family == 'Debian' else 'sshd') ~ '.service' }}"
       state: reloaded
    
-
-#  - name: Reload service ssh in Ubuntu
-#    ansible.builtin.systemd_service:
-#      name: ssh.service
-#      state: reloaded
-#    when: ansible_os_family == "Debian"
-
-
-    
