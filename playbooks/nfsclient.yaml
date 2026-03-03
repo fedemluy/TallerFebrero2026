@@ -29,12 +29,12 @@
         dest: /etc/auto.nfs
         owner: root
         mode: '0644'
-      notify: Restart nfs Service
+#      notify: Restart nfs Service
 
     - name: service NFS is started
       ansible.builtin.systemd_service:
         name: autofs
-        state: started
+        state: restarted
         enabled: true
 
     - name: test the file to client 
