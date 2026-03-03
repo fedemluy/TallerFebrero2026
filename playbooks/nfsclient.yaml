@@ -1,5 +1,5 @@
 ---
-- hosts: ubuntu
+- hosts: ubuntu01
   become: true
 
   tasks:
@@ -24,10 +24,10 @@
   - name: copy file autofs
     ansible.builtin.copy:
       src: ../file/auto.nfs
-      dest: /etc/nfs.autofs
+      dest: /etc/auto.nfs
       owner: root
       mode: '0644'
-    notify: Restart nfs Service    
+    notify: Restart nfs Service
 
   - name: service NFS is started
     ansible.builtin.systemd_service:
