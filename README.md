@@ -101,6 +101,15 @@ Para ejecutar el playbook vamos a usar el comando ansible-playbook con la opcion
 ansible-playbook -i inventories/hosts.ini playbooks/hardening.yaml --check --ask-become-pass
 ```
 
+
+# Ejecutar proyecto completo
+```bash
+ansible-playbook -i inventories/hosts.ini playbooks/site.yaml --ask-become-pass
+```
+
+
+# Ejecutar por partes
+
 ## Preparar el servidor NFS
 ```bash
 ansible-playbook -i inventories/hosts.ini playbooks/nfsserver.yaml --ask-become-pass
@@ -114,5 +123,11 @@ ansible -i inventories/hosts.ini fileserver -m command -a 'cat /srv/nfs/shared/R
 ```bash
 ansible-playbook -i inventories/hosts.ini playbooks/nfsclient.yaml --ask-become-pass
 ```
+
+## Probar el cliente NFS
+```bash
+ansible -i inventories/hosts.ini fileserver -m command -a 'cat /mnt/shared/README-NFS.txt'
+```
+
 
 
