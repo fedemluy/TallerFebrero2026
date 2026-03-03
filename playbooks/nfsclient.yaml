@@ -1,105 +1,107 @@
 ---
-- hosts: ubuntu01
+- hosts: ubuntu
   become: true
 
   tasks:
 
-  - name: install packet autofs
-    ansible.builtin.apt:
-      name: "{{  item  }}"
-      state: present
-      update_cache: true
-    loop:
-      - autofs
-      - nfs-common
-      - python3
+    - name: install packet autofs
+      ansible.builtin.apt:
+        name: "{{  item  }}"
+        state: present
+        update_cache: true
+      loop:
+        - autofs
+        - nfs-common
+        - python3
 
-  - name: copy file auto.master.fs
-    ansible.builtin.copy:
-      src: ../file/nfs.autofs
-      dest: /etc/auto.master.d/nfs.autofs
-      owner: root
-      mode: '0644'
+
+
+    - name: copy file auto.master.fs
+      ansible.builtin.copy:
+        src: ../file/nfs.autofs
+        dest: /etc/auto.master.d/nfs.autofs
+        owner: root
+        mode: '0644'
  
-  - name: copy file autofs
-    ansible.builtin.copy:
-      src: ../file/auto.nfs
-      dest: /etc/auto.nfs
-      owner: root
-      mode: '0644'
-    notify: Restart nfs Service
+    - name: copy file autofs
+      ansible.builtin.copy:
+        src: ../file/auto.nfs
+        dest: /etc/auto.nfs
+        owner: root
+        mode: '0644'
+      notify: Restart nfs Service
 
-  - name: service NFS is started
-    ansible.builtin.systemd_service:
-      name: autofs
-      state: started
-      enabled: true
+    - name: service NFS is started
+      ansible.builtin.systemd_service:
+        name: autofs
+        state: started
+        enabled: true
 
-  - name: test the file to client 
-    ansible.builtin.command:
-      cmd: ls /mnt/shared/
+    - name: test the file to client 
+      ansible.builtin.command:
+        cmd: ls /mnt/shared/
 
 # https://docs.ansible.com/projects/ansible/latest/collections/community/general/ufw_module.html#examples
 
-  - name: enable UFW
-    community.general.ufw:
-      state: enabled
+    - name: enable UFW
+      community.general.ufw:
+        state: enabled
   
-  - name: Config Firewall permit ssh
-    community.general.ufw:
+    - name: Config Firewall permit ssh
+      community.general.ufw:
         rule: allow
         name: openssh
         src: 192.168.10.0/24
 
-  - name: Access nfs
-    community.general.ufw:
-      rule: allow
-      port: '2049'
-      src: 192.168.10.0/24
-      proto: tcp
+    - name: Access nfs
+      community.general.ufw:
+        rule: allow
+        port: '2049'
+        src: 192.168.10.0/24
+        proto: tcp
 
 
-  - name: Access tcp port 8080 
-    community.general.ufw:
-      rule: allow
-      port: '8080'
-      proto: tcp
+    - name: Access tcp port 8080 
+      community.general.ufw:
+        rule: allow
+        port: '8080'
+        proto: tcp
 
-  - name: Allow trafic output
-    community.general.ufw:
-      policy: allow
-      direction: outgoing
+    - name: Allow trafic output
+      community.general.ufw:
+        policy: allow
+        direction: outgoing
 
-  - name: Deny all trafic incoming
-    community.general.ufw:
-      direction: incoming
-      policy: deny
+    - name: Deny all trafic incoming
+      community.general.ufw:
+        direction: incoming
+        policy: deny
         
 
-  - name: Copy file service webserver
-    ansible.builtin.copy:
-      src: ../file/shared-http.service
-      dest: /etc/systemd/system/shared-http.service
-      owner: root
-      mode: '0644'
-    notify: Restart webserver
+    - name: Copy file service webserver
+      ansible.builtin.copy:
+        src: ../file/shared-http.service
+        dest: /etc/systemd/system/shared-http.service
+        owner: root
+        mode: '0644'
+      notify: Restart webserver
 
-  - name: Start webserver
-    ansible.builtin.systemd_service:
-      name: shared-http
-      state: started
-      enabled: true
-      daemon-reload: true
+    - name: Start webserver
+      ansible.builtin.systemd_service:
+        name: shared-http
+        state: started
+        enabled: true
+        daemon-reload: true
 
   handlers:  
       
-  - name: Restart nfs Service
-    ansible.builtin.systemd_service:
-      name: autofs.service
-      state: reloaded
+    - name: Restart nfs Service
+      ansible.builtin.systemd_service:
+        name: autofs.service
+        state: restarted
    
-  - name: Restart webserver
-    ansible.builtin.systemd_service:
-      name: shared-http
-      state: restarted
-      daemon-reload: true
+    - name: Restart webserver
+      ansible.builtin.systemd_service:
+        name: shared-http
+        state: restarted
+        daemon-reload: true
