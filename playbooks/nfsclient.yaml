@@ -37,7 +37,7 @@
 
   - name: test the file to client 
     ansible.builtin.command:
-      cmd: cat /mnt/shared/README-NFS.txt
+      cmd: ls /mnt/shared/
 
 # https://docs.ansible.com/projects/ansible/latest/collections/community/general/ufw_module.html#examples
 
